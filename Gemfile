@@ -8,10 +8,10 @@ source 'https://rubygems.org'
 gemspec
 
 # ActionController
-gem 'actionpack', '~> 7.2'
+gem 'actionpack', '~> 8.0'
 
 # Rails' ActiveRecord ORM
-gem 'activerecord', '~> 7.2'
+gem 'activerecord', '~> 8.0'
 
 # Gem management
 gem 'bundler', '> 2.4'
@@ -29,4 +29,4 @@ gem 'rubocop', '~> 1.60', require: false
 gem 'rubocop-performance', '~> 1.20', require: false
 
 # Database for testing
-gem 'sqlite3', '~> 1.7'
+gem 'sqlite3', '~> 2.5'

@@ -12,7 +12,7 @@ require 'unary_plus/version'
   spec.name = 'unary_plus'
   spec.version = ::UnaryPlus::VERSION
   spec.authors = ['Steven Hoffman']
-  spec.required_ruby_version = '>= 3.3.0'
+  spec.required_ruby_version = '>= 3.4.1'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.summary = 'A few useful services and initializers.'
@@ -23,9 +23,9 @@ require 'unary_plus/version'
   spec.executables = []
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'activesupport', '>= 7.2'
+  spec.add_dependency 'activesupport', '>= 8.0'
   spec.add_dependency 'jbuilder', '~> 2.11'
   spec.add_dependency 'railties', '>= 7.2'
-  spec.add_dependency 'sanitize', '~> 6.1'
+  spec.add_dependency 'sanitize', '~> 7.0'
   spec.add_dependency 'zeitwerk', '~> 2.6'
 end
