@@ -17,7 +17,7 @@ module UnaryPlus
           csv << data.first.keys
 
           data.each do |row|
-            csv << (row.values.map { _1&.to_s&.tr("\n", "\v") })
+            csv << (row.values.map { it&.to_s&.tr("\n", "\v") })
           end
         end
       end
@@ -26,7 +26,7 @@ module UnaryPlus
         ::CSV.generate do |csv|
           # It's just an array of arrays; the first row is likely the header
           data.each do |row|
-            csv << (Array(row).map { _1&.to_s&.tr("\n", "\v") })
+            csv << (Array(row).map { it&.to_s&.tr("\n", "\v") })
           end
         end
       end

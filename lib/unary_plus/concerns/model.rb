@@ -19,7 +19,7 @@ module UnaryPlus
         def build_from_params(permitted_params, **attributes)
           key = attributes.delete(:params_key)
 
-          new(**attributes) { _1.assign_params(permitted_params, key:) }
+          new(**attributes) { it.assign_params(permitted_params, key:) }
         end
       end
 

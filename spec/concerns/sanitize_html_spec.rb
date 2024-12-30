@@ -10,7 +10,7 @@ require_relative '../../config/initializers/sanitize'
 SANITIZE_CONFIG = {
   elements: %w[p span br],
   attributes: { p: %w[style] }.stringify_keys,
-  transformers: [-> { ::Sanitize.clean_nodes(_1[:node]) }],
+  transformers: [-> { ::Sanitize.clean_nodes(it[:node]) }],
   css: {
     allow_comments: false,
     allow_hacks: false,

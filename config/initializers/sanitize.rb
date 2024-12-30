@@ -155,7 +155,7 @@ class Sanitize
 
     def empty_element?(node) = node.element? && !self_closing?(node) && !content?(node)
 
-    def content?(node) = text?(node) || (node.element? && node.children.any? { content_or_self_closing?(_1) })
+    def content?(node) = text?(node) || (node.element? && node.children.any? { content_or_self_closing?(it) })
 
     def content_or_self_closing?(node) = self_closing?(node) || text?(node) || content?(node)
 

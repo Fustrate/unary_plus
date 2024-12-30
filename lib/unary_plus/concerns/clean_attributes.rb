@@ -12,23 +12,22 @@ module UnaryPlus
 
       # Collapse multiple spaces, remove leading/trailing whitespace, and remove carriage returns
       def self.strip(text)
-        return text.map { strip(_1) } if text.is_a?(::Array)
+        return text.map { strip(it) } if text.is_a?(::Array)
 
         return if text.blank?
 
         text.strip.gsub(/ {2,}/, ' ').gsub(/^[ \t]+|[ \t]+$/, '').gsub(/\r\n?/, "\n").gsub(/\n{3,}/, "\n\n")
       end
 
+      def self.polymorphic_type_columns(klass)
+        klass.reflect_on_all_associations.filter_map { "#{it.name}_type" if it.options[:polymorphic] }
+      end
+
       def self.string_columns(klass)
         # There's no reason to clean polymorphic type columns
-        polymorphic_type_columns = klass.reflect_on_all_associations
-          .select { _1.options[:polymorphic] }
-          .map { "#{_1.name}_type" }
+        type_columns = polymorphic_type_columns(klass)
 
-        klass.columns
-          .select { self::STRING_TYPES.include?(_1.sql_type_metadata.type) }
-          .reject { polymorphic_type_columns.include?(_1.name) }
-          .map(&:name)
+        klass.columns.filter_map { it.name if self::STRING_TYPES.include?(it.type) && !type_columns.include?(it.name) }
       end
 
       def self.clean_record(record)

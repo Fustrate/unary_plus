@@ -12,7 +12,7 @@ module UnaryPlus
 
           @wrap = package.workbook.styles.add_style(alignment: { wrap_text: true })
 
-          package.workbook.add_worksheet(name:) { add_data_to_sheet(data, _1) }
+          package.workbook.add_worksheet(name:) { add_data_to_sheet(data, it) }
 
           return package.to_stream.read
         end
@@ -23,7 +23,7 @@ module UnaryPlus
       def add_data_to_sheet(data, sheet)
         sheet.add_row data.first.keys if data.any?
 
-        data.each { sheet.add_row _1.values, style: @wrap }
+        data.each { sheet.add_row it.values, style: @wrap }
       end
     end
   end

@@ -65,7 +65,7 @@ module UnaryPlus
 
       def process_timestamps(type, time_format)
         columns_of_type(type).each do |column_name|
-          changes[column_name].map! { _1&.strftime(time_format) }
+          changes[column_name].map! { it&.strftime(time_format) }
         end
       end
 
@@ -75,7 +75,7 @@ module UnaryPlus
         end
       end
 
-      def columns_of_type(type) = Array(columns[type]).select { changes[_1] }
+      def columns_of_type(type) = Array(columns[type]).select { changes[it] }
 
       def process_relations
         subject.class.reflect_on_all_associations.each do |relation|
@@ -104,12 +104,12 @@ module UnaryPlus
         ::Object.const_get(old_type).find(old_id)&.to_s if old_type
       end
 
+      def unignored_columns = subject.class.columns.reject { self.class::IGNORE_COLUMNS.include?(it.name) }
+
       def columns
-        # .reject { _1.name.match?(/_(?:type|id)\z/) }
-        @columns ||= subject.class.columns
-          .reject { self.class::IGNORE_COLUMNS.include? _1.name }
-          .group_by { _1.sql_type_metadata.type }
-          .transform_values { |cols| cols.map { _1.name.to_sym } }
+        @columns ||= unignored_columns
+          .group_by { it.sql_type_metadata.type }
+          .transform_values { |cols| cols.map { it.name.to_sym } }
       end
 
       def process_belongs_to_relation(name)
