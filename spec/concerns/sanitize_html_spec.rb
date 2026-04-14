@@ -93,4 +93,10 @@ SANITIZE_CONFIG = {
       expect(clean).to eq 'Test'
     end
   end
+
+  it 'does nothing when the input is nil' do
+    clean = described_class.sanitize(nil, ::SANITIZE_CONFIG)
+
+    expect(clean).to eq nil
+  end
 end

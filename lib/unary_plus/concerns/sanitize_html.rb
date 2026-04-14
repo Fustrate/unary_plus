@@ -10,7 +10,11 @@ module UnaryPlus
     module SanitizeHtml
       extend ::ActiveSupport::Concern
 
-      def self.sanitize(html, config) = smart_strip ::Sanitize.fragment(normalize(html), config)
+      def self.sanitize(html, config)
+        return if html.nil?
+
+        smart_strip ::Sanitize.fragment(normalize(html), config)
+      end
 
       # Remove non-breaking & ideographic spaces before sanitizing, and un-fancy quotes.
       def self.normalize(html) = html.tr('‘’“”', %q(''"")).gsub(/(?:[\u00A0\u3000]|&nbsp;) ?/, ' ')
