@@ -30,3 +30,6 @@ gem 'rubocop-performance', '~> 1.20', require: false
 
 # Database for testing
 gem 'sqlite3', '~> 2.5'
+
+# CSV generation
+gem 'csv'
