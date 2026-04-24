@@ -5,23 +5,6 @@
 
 require 'spec_helper'
 
-require 'active_record'
-require 'active_support'
-
-::ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
-::ActiveRecord::Base.logger = ::Logger.new($stdout)
-
-::ActiveRecord::Schema.define do
-  create_table :employees, force: true do |t|
-    t.string :username
-    t.text :website_bio
-    # SQLite doesn't have a citext type... not sure how to test that specific part.
-    t.string :email
-    # SQLite also doesn't have an array type...
-    t.string :aliases
-  end
-end
-
 class Employee < ::ActiveRecord::Base
   include ::UnaryPlus::Concerns::CleanAttributes
 
@@ -54,8 +37,7 @@ end
       .to have_attributes(username: 'strip this text', email: 'strip this text', website_bio: 'strip this text')
   end
 
-  # This doesn't work with SQLite, I need to run these tests on postgres
-  xit 'strips an array of strings' do
+  it 'strips an array of strings' do
     employee = ::Employee.new(username: "\n\t ", email: ' ', website_bio: "\t\t\t", aliases: [' dave', 'd dawg '])
 
     employee.validate
@@ -100,5 +82,31 @@ end
 
     expect(employee)
       .to have_attributes(username: "hello\n\nworld!", email: "hello\n\nworld!", website_bio: "hello\n\nworld!")
+  end
+
+  it 'collapses multiple consecutive spaces into one' do
+    employee = ::Employee.new(username: 'hello   world', email: 'a  b  c', website_bio: 'x  y')
+
+    employee.validate
+
+    expect(employee).to have_attributes(username: 'hello world', email: 'a b c', website_bio: 'x y')
+  end
+
+  describe '.strip' do
+    it 'returns nil for nil input' do
+      expect(described_class.strip(nil)).to be_nil
+    end
+
+    it 'returns nil for a blank string' do
+      expect(described_class.strip('   ')).to be_nil
+    end
+
+    it 'processes each element when given an array' do
+      expect(described_class.strip(['  hello  ', '  world  '])).to eq %w[hello world]
+    end
+
+    it 'returns nil elements for blank array entries' do
+      expect(described_class.strip(['', '  ', nil])).to eq [nil, nil, nil]
+    end
   end
 end

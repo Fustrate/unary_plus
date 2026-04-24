@@ -5,6 +5,25 @@
 
 require 'unary_plus'
 
+require 'active_record'
+require 'active_support'
+
+::ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
+::ActiveRecord::Base.logger = ::Logger.new($stdout)
+
+::ActiveRecord::Schema.define do
+  create_table :employees, force: true do |t|
+    t.string :username
+    t.text :website_bio
+    t.string :email
+    t.string :aliases
+  end
+
+  create_table :posts, force: true do |t|
+    t.text :body
+  end
+end
+
 ::RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true

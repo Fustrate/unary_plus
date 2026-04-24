@@ -99,4 +99,30 @@ SANITIZE_CONFIG = {
 
     expect(clean).to eq nil
   end
+
+  describe '.sanitize_html class macro' do
+    before do
+      stub_const('Post', Class.new(::ActiveRecord::Base) do
+        include ::UnaryPlus::Concerns::SanitizeHtml
+
+        sanitize_html :body, ::SANITIZE_CONFIG
+      end)
+    end
+
+    it 'sanitizes the attribute before validation' do
+      post = ::Post.new(body: '<p> Hello&nbsp;World </p>')
+
+      post.validate
+
+      expect(post.body).to eq '<p>Hello World</p>'
+    end
+
+    it 'leaves the attribute nil when it is nil' do
+      post = ::Post.new(body: nil)
+
+      post.validate
+
+      expect(post.body).to be_nil
+    end
+  end
 end
