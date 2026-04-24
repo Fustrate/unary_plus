@@ -12,7 +12,7 @@ require 'unary_plus/version'
   spec.name = 'unary_plus'
   spec.version = ::UnaryPlus::VERSION
   spec.authors = ['Steven Hoffman']
-  spec.required_ruby_version = '>= 3.4.1'
+  spec.required_ruby_version = '>= 4.0.0'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   spec.summary = 'A few useful services and initializers.'
